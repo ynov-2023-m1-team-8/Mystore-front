@@ -4,13 +4,13 @@ import Alert from "@/components/UI/Alert";
 import ProductsGrid from "@/components/products/ProductsGrid";
 import TitlePage from "@/components/UI/TitlePage";
 import ProductsCounter from "@/components/products/ProductsCounter";
+import PriceRange from "@/components/UI/PriceRange"
 
 export default async function Page({
     searchParams,
 }) {
 
     const { take = 8 } = searchParams || {};
-
     const products = await getProducts(take);
 
     if (!products.data || products.success === false) return <Alert message={products.message} type="error" />;
@@ -18,9 +18,11 @@ export default async function Page({
     return (
         <div className="container mx-auto">
             <TitlePage title="Shop" />
+            <PriceRange/>
             <ProductsCounter productsLength={products.data.length} />
             <ProductsGrid products={products.data} />
             <div className="flex justify-center mb-24">
+
                 {
                     Number(take) <= products.data.length && (
                         <Link
