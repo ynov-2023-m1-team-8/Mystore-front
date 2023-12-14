@@ -1,19 +1,63 @@
 "use client"
-import { useState } from "react";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css'; // Importez les styles du curseur
+import { useState } from 'react';
+import ProductsGrid from "@/components/products/ProductsGrid";
+import { useRouter } from 'next/navigation'
 
-const Index = () => {
 
-    const [valueFilter, setValueFilter] = useState(0)
 
+const Index = ({products}) => {
+
+const [rangeValues, setRangeValues] = useState([0, 500]);
+const [saveFilterArray, setSaveFilterArray] = useState()
+const router = useRouter()
+
+const handleRangeChange = (values) => {
+  setRangeValues(values);
+};
+
+
+
+const handleRangeClick = () => {
+  // if(rangeValues){
+  // const filterArray = products.filter((e) => {
+  //     return Number(e.price) > rangeValues[0] && Number(e.price) < rangeValues[1]
+  //   })
+  //   if(filterArray){
+  //     setSaveFilterArray(filterArray)
+  //   }
+  // }
+  router.push(`/shop?min=${rangeValues[0]}&max=${rangeValues[1]}`)
+}
   return (
-    <div className="relative mb-6">
-            <label for="labels-range-input" className="sr-only">Labels range</label>
-            <input id="labels-range-input" type="range" value={valueFilter} onChange={(e) => setValueFilter(e.target.value)} min="100" max="1500" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"/>
-            <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Min ($100)</span>
-            <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-1/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">$500</span>
-            <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">$1000</span>
-            <span className="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">Max ($1500)</span>
-            </div>
+    <div className='grid grid-cols-2 gap-8 my-12'>
+    <div> 
+    <Slider
+      min={0}
+      max={400}
+      range
+      value={rangeValues}
+      onChange={handleRangeChange}
+      trackStyle={{backgroundColor :'black'}}
+      handleStyle={{backgroundColor : 'grey', borderColor :'black'}}
+    />
+    
+    <div className='grid grid-cols-2'>
+    <div>
+    <label>{rangeValues[0]}€</label>
+    </div>
+    <div style={{display : 'flex', flexDirection : 'row-reverse'}}>
+    <label>{rangeValues[1]}€</label>
+    </div>
+    </div>
+    </div>
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleRangeClick}>
+      Filter
+    </button>
+    <div>
+    </div>
+    </div>
   );
 }
 
