@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
+import { getProduct, getRecoList} from '@/services/api/product.api.js';
 import BreadCrumb from "@/components/UI/Breadcrumb";
 import TitlePage from '@/components/UI/TitlePage';
 import ProductFancyBox from "@/components/products/ProductFancyBox";
@@ -9,6 +10,8 @@ import Loader from "@/components/UI/Loader";
 import Alert from "@/components/UI/Alert";
 import { getBase64 } from '../../../lib/base64';
 import Modal from "@/components/UI/Modal";
+import ProductGrid from "@/components/products/ProductCard";
+
 
 export default function Page() {
 
@@ -20,6 +23,7 @@ export default function Page() {
     const [slideIndex, setSlideIndex] = useState(0);
     const [showFancyBox, setShowFancyBox] = useState(false);
     const [error, setError] = useState(null);
+    const [recoList, setRecoList] = useState([])
 
     useEffect(() => {
         const fetchProduct = async () => {
