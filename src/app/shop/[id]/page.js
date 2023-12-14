@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
-import { getProduct } from '@/services/api/product.api.js';
 import BreadCrumb from "@/components/UI/Breadcrumb";
 import TitlePage from '@/components/UI/TitlePage';
 import ProductFancyBox from "@/components/products/ProductFancyBox";
@@ -37,11 +36,37 @@ export default function Page() {
             finally {
                 setLoading(false);
             }
+        }   
+        const listReco = async () => {
+            const data = await getRecoList();
+            console.log('okokokok',data)
+            if(data){
+             setRecoList(data)
         }
+}
         if (id) {
             fetchProduct();
+            listReco()
         }
+
     }, [id]);
+
+    const mapRecoList = recoList.map((product) => {
+        return(
+        <div style={{width : '30%'}}>
+            <p>Name : {product.name}</p>
+            <img
+                        className=""
+                        alt={product.name}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${product.packshot}`}
+                        fill
+                        sizes="100%"
+                        style={{postion : 'relative'}}
+                    />
+            <p>Price : {product.price}</p>
+        </div>
+        )
+    })
 
     useEffect(() => {
         const fetchPlaceholderImage = async () => {
@@ -144,8 +169,17 @@ export default function Page() {
                     <TitlePage title={product.name} />
                     <p className="mb-3 font-semibold text-lg">{product.price} €</p>
                     <p className="leading-7">{product.description}</p>
+<<<<<<< Updated upstream
                     <div className='mt-5 block'>
                         <Modal />
+=======
+                    <Modal />
+                    <div className="mt-10 p-5">
+                        <TitlePage title="Products recomandation"/>
+                        <div className="h-full flex-1" style={{ border : "1px solid black", borderRadius : '20px', display: 'flex',        justifyContent: 'space-around'}}>
+                        {mapRecoList} 
+                        </div>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>

@@ -14,12 +14,8 @@ export default async function Page({
     const { take = 8 } = searchParams || {};
     const { min, max} = searchParams || {}
     if(min && max){
-        console.log('coucou')
-        console.log(min)
          products = await getProductFiltered(min,max)
     }else{
-        console.log('coucouelse')
-
         products = await getProducts(take);
     }
     //await seachParams du query depuis mon boutton client filter
