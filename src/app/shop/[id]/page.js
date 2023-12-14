@@ -9,6 +9,7 @@ import ProductFancyBox from "@/components/products/ProductFancyBox";
 import Loader from "@/components/UI/Loader";
 import Alert from "@/components/UI/Alert";
 import { getBase64 } from '../../../lib/base64';
+import Modal from "@/components/UI/Modal";
 
 export default function Page() {
 
@@ -143,6 +144,9 @@ export default function Page() {
                     <TitlePage title={product.name} />
                     <p className="mb-3 font-semibold text-lg">{product.price} €</p>
                     <p className="leading-7">{product.description}</p>
+                    <div className='mt-5 block'>
+                        <Modal />
+                    </div>
                 </div>
             </div>
         </div>

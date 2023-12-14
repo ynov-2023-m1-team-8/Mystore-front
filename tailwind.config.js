@@ -3,10 +3,13 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './src/app/**/*.{js,jsx}',
     './src/components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
+    "./node_modules/flowbite/**/*.js",
+    "./pages/**/*.{ts,tsx}",
+    "./public/**/*.html",
+    "./node_modules/flowbite-react/**/*.js",
 	],
   theme: {
     fontFamily: {
@@ -80,5 +83,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('flowbite/plugin')
+  ],
 }
