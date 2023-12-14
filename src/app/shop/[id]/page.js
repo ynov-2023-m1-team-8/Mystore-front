@@ -144,7 +144,9 @@ export default function Page() {
                     <TitlePage title={product.name} />
                     <p className="mb-3 font-semibold text-lg">{product.price} €</p>
                     <p className="leading-7">{product.description}</p>
-                    <Modal />
+                    <div className='mt-5 block'>
+                        <Modal />
+                    </div>
                 </div>
             </div>
         </div>
