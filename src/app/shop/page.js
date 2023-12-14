@@ -1,26 +1,39 @@
 import Link from "next/link";
-import { getProducts } from "@/services/api/product.api.js";
+import { getProducts, getProductFiltered } from "@/services/api/product.api.js";
 import Alert from "@/components/UI/Alert";
 import ProductsGrid from "@/components/products/ProductsGrid";
 import TitlePage from "@/components/UI/TitlePage";
 import ProductsCounter from "@/components/products/ProductsCounter";
+import PriceRange from "@/components/UI/PriceRange"
 
 export default async function Page({
     searchParams,
 }) {
+    let products;
 
     const { take = 8 } = searchParams || {};
+    const { min, max} = searchParams || {}
+    if(min && max){
+        console.log('coucou')
+        console.log(min)
+         products = await getProductFiltered(min,max)
+    }else{
+        console.log('coucouelse')
 
-    const products = await getProducts(take);
+        products = await getProducts(take);
+    }
+    //await seachParams du query depuis mon boutton client filter
 
     if (!products.data || products.success === false) return <Alert message={products.message} type="error" />;
 
     return (
         <div className="container mx-auto">
             <TitlePage title="Shop" />
+            <PriceRange products={products.data} />
             <ProductsCounter productsLength={products.data.length} />
             <ProductsGrid products={products.data} />
             <div className="flex justify-center mb-24">
+
                 {
                     Number(take) <= products.data.length && (
                         <Link
