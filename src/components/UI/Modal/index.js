@@ -39,14 +39,14 @@ export default function Index() {
     }
 
     const [userForm, setUserForm] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        product: id
+        productId : id,
+        fname : '',
+        lname : '',
+        email : '' ,
     });
 
-    //Creation du compte
-    // const {fetchData, data, error, loading} = useFetch({url:'/auth/register', method:"POST", body:userForm, token:null})
+
+console.log(userForm)
 
     //Remplir les champs du formulaire
     const handleChange = (e) => {
@@ -57,31 +57,28 @@ export default function Index() {
         })
     }
 
-    // Quand on clique cela crée le compte
-    const submitForm = (e) => {
+    // A UTILISER QUAND LE SMTP MARCHE (EMAIL)
+    const submitForm = async (e) => {
         e.preventDefault();
-        fetchData();
-        if (data){
-          alert('Merci pour votre confiance !')
-        }
-        // else (error)
-        // console.log(error);
+
+        const data = await fetch("http://localhost:3030/api/products/interested",{
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `productId=${userForm.productId}&fname=${userForm.fname}&lname=${userForm.lname}&email=${userForm.email}`,
+            }
+          );
+
+          const body = await data.json();
+
+          if (body.error) {
+            console.error(body.error);
+          }
+          if (body){
+            console.log('ok reussit')
+            setOpenModal(!openModal)
+          }
+
     }
-
-    //A UTILISER QUAND LE SMTP MARCHE (EMAIL)
-    // const submitForm = (e) => {
-    //     e.preventDefault();
-    //     fetchData();
-    //     if (error){
-    //         console.log(error);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     if (data.success == true){
-    //         alert('Merci pour votre confiance !')
-    //     }
-    // }, [data]);
 
     return (
         <>
@@ -98,9 +95,9 @@ export default function Index() {
                                 <Label htmlFor="firstName" value="Votre prénom" />
                             </div>
                             <TextInput
-                                id="firstName"
-                                name="firstName"
-                                value={userForm?.firstName}
+                                id="fname"
+                                name="fname"
+                                value={userForm?.fname}
                                 onChange={(e) => handleChange(e)}
                                 required
                             />
@@ -108,9 +105,9 @@ export default function Index() {
                                 <Label htmlFor="nom" value="Votre nom" />
                             </div>
                             <TextInput
-                                id="lastName"
-                                name="lastName"
-                                value={userForm?.lastName}
+                                id="lname"
+                                name="lname"
+                                value={userForm?.lname}
                                 onChange={(e) => handleChange(e)}
                                 required
                             />

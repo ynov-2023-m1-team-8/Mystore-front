@@ -10,9 +10,7 @@ import Loader from "@/components/UI/Loader";
 import Alert from "@/components/UI/Alert";
 import { getBase64 } from '../../../lib/base64';
 import Modal from "@/components/UI/Modal";
-import ProductGrid from "@/components/products/ProductCard";
-
-
+import ProductCard from "@/components/products/ProductCard";
 export default function Page() {
 
     const { id } = useParams();
@@ -24,6 +22,11 @@ export default function Page() {
     const [showFancyBox, setShowFancyBox] = useState(false);
     const [error, setError] = useState(null);
     const [recoList, setRecoList] = useState([])
+
+
+    const mapRecoList = recoList.map((reco) =>{
+        return(<ProductCard key={reco.id} product={reco}/>)
+    })
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -48,29 +51,13 @@ export default function Page() {
              setRecoList(data)
         }
 }
+
         if (id) {
             fetchProduct();
             listReco()
         }
 
     }, [id]);
-
-    const mapRecoList = recoList.map((product) => {
-        return(
-        <div style={{width : '30%'}}>
-            <p>Name : {product.name}</p>
-            <img
-                        className=""
-                        alt={product.name}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${product.packshot}`}
-                        fill
-                        sizes="100%"
-                        style={{postion : 'relative'}}
-                    />
-            <p>Price : {product.price}</p>
-        </div>
-        )
-    })
 
     useEffect(() => {
         const fetchPlaceholderImage = async () => {
@@ -173,20 +160,16 @@ export default function Page() {
                     <TitlePage title={product.name} />
                     <p className="mb-3 font-semibold text-lg">{product.price} €</p>
                     <p className="leading-7">{product.description}</p>
-<<<<<<< Updated upstream
-                    <div className='mt-5 block'>
-                        <Modal />
-=======
-                    <Modal />
                     <div className="mt-10 p-5">
-                        <TitlePage title="Products recomandation"/>
-                        <div className="h-full flex-1" style={{ border : "1px solid black", borderRadius : '20px', display: 'flex',        justifyContent: 'space-around'}}>
-                        {mapRecoList} 
-                        </div>
->>>>>>> Stashed changes
+                    <Modal />
                     </div>
                 </div>
             </div>
+            <div style={{border : '1px solid lightgrey', marginTop : '5%' }}></div>
+                        <TitlePage title="Products recomandation"/>
+                        <div className="m-5 p-5 flex-1" style={{ display: 'flex',justifyContent: 'space-around'}}>
+                            {mapRecoList}
+                        </div>
         </div>
     );
 }
