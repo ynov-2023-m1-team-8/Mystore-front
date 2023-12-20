@@ -17,13 +17,14 @@ export async function getProducts(take) {
 export async function getProductFiltered(min,max) {
     try {
     console.log(min,'apio')
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/filtered-products?min=${min}&max=${max}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_FILTER_ENDPOINT}/products/filtered-products?min=${min}&max=${max}`, {
             cache: "no-store",
             headers: {
                 "Content-Type": "application/json",
             },
         });
         const data = await res.json();
+        console.log('okok',data)
         return data;
     }
     catch (err) {
@@ -31,13 +32,30 @@ export async function getProductFiltered(min,max) {
     }
 }
 
-export async function getProduct(id) {
+export async function sapgetProduct(id) {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`, {
             cache: "no-store",
         });
         const data = await res.json();
         console.log(data)
+        return data;
+    }
+    catch (err) {
+        return err;
+    }
+}
+
+export async function getPostFilter(min,max) {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_FILTER_ENDPOINT}/products/filter?min=${min}&max=${max}`, {
+            cache: "no-store",
+            method : 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await res.json();
         return data;
     }
     catch (err) {

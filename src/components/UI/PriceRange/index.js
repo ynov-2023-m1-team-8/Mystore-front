@@ -4,6 +4,8 @@ import 'rc-slider/assets/index.css'; // Importez les styles du curseur
 import { useState } from 'react';
 import ProductsGrid from "@/components/products/ProductsGrid";
 import { useRouter } from 'next/navigation'
+import { getPostFilter } from "@/services/api/product.api.js";
+
 
 
 
@@ -19,16 +21,14 @@ const handleRangeChange = (values) => {
 
 
 
-const handleRangeClick = () => {
-  // if(rangeValues){
-  // const filterArray = products.filter((e) => {
-  //     return Number(e.price) > rangeValues[0] && Number(e.price) < rangeValues[1]
-  //   })
-  //   if(filterArray){
-  //     setSaveFilterArray(filterArray)
-  //   }
-  // }
+const handleRangeClick = async () => {
   router.push(`/shop?min=${rangeValues[0]}&max=${rangeValues[1]}`)
+  let postfilter = await getPostFilter(rangeValues[0],rangeValues[1])
+  if (postfilter){
+    console.log('postok')
+  }
+
+  console.log('gg')
 }
   return (
     <div className='grid grid-cols-2 gap-8 my-12'>

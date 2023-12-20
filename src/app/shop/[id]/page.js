@@ -46,7 +46,6 @@ export default function Page() {
         }   
         const listReco = async () => {
             const data = await getRecoList();
-            console.log('okokokok',data)
             if(data){
              setRecoList(data)
         }
