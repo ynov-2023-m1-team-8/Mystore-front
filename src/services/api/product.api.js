@@ -32,7 +32,7 @@ export async function getProductFiltered(min,max) {
     }
 }
 
-export async function sapgetProduct(id) {
+export async function getProduct(id) {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`, {
             cache: "no-store",
@@ -47,6 +47,7 @@ export async function sapgetProduct(id) {
 }
 
 export async function getPostFilter(min,max) {
+    console.log(min,max)
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_FILTER_ENDPOINT}/products/filter?min=${min}&max=${max}`, {
             cache: "no-store",

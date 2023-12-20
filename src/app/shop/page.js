@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getProducts, getProductFiltered } from "@/services/api/product.api.js";
+import { getProductFiltered, getProducts } from "@/services/api/product.api";
 import Alert from "@/components/UI/Alert";
 import ProductsGrid from "@/components/products/ProductsGrid";
 import TitlePage from "@/components/UI/TitlePage";

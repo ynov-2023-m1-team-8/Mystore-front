@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
-import { getProduct, getRecoList} from '@/services/api/product.api.js';
+import { getProduct, getRecoList } from '@/services/api/product.api.js';
 import BreadCrumb from "@/components/UI/Breadcrumb";
 import TitlePage from '@/components/UI/TitlePage';
 import ProductFancyBox from "@/components/products/ProductFancyBox";
