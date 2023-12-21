@@ -1,3 +1,5 @@
+import { noSSR } from "next/dynamic";
+
 export async function getProducts(take) {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?take=${take}`, {
@@ -38,7 +40,6 @@ export async function getProduct(id) {
             cache: "no-store",
         });
         const data = await res.json();
-        console.log(data)
         return data;
     }
     catch (err) {
@@ -47,11 +48,9 @@ export async function getProduct(id) {
 }
 
 export async function getPostFilter(min,max) {
-    console.log(min,max)
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_FILTER_ENDPOINT}/products/filter?min=${min}&max=${max}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_FILTER_ENDPOINT}/products/filtered-products?min=${min}&max=${max}`, {
             cache: "no-store",
-            method : 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -65,10 +64,28 @@ export async function getPostFilter(min,max) {
 }
 
 
-export async function getRecoList(){
-   const data = [{id : 1, name : 'alexis', price : '126', thumbnail: "uploads/product1.webp", packshot: "/uploads/product1_packshot.jpeg"},
-            {id : 2, name : 'alexis1', price : '116', thumbnail: "uploads/product2.webp", packshot: "/uploads/product2_packshot.jpeg"},
-            {id : 3, name : 'alexis2', price : '106', thumbnail: "uploads/product3.webp", packshot: "/uploads/product3_packshot.jpeg"}]
-            return data
-}
+export async function getRecoList(localStorageFilter,id){
+        const ok = localStorageFilter
+        console.log('okokokkoko',ok[1])
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_FILTER_ENDPOINT}/products/filtered-products?min=${ok[0]}&max=${ok[1]}`, {
+            cache: "no-store",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await res.json();
+        console.log(data)
+        if(data){
+            const dataFilteredForReco = data.data.filter((e) => e.id !== Number(id))
+            console.log('okokooko',data.data)
+            if(dataFilteredForReco.length >= 3){
+                const slicedData = dataFilteredForReco.slice(0, 3);
+                return slicedData;
+            }else{
+                return dataFilteredForReco
+            }
+        }   
+
+    }
+
 

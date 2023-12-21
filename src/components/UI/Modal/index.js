@@ -3,35 +3,12 @@
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation'
-import { getProduct } from '@/services/api/product.api.js';
+import emailjs from '@emailjs/browser'
 
 export default function Index() {
 
     const { id } = useParams();
     const [openModal, setOpenModal] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchProduct = async () => {
-            setLoading(true);
-            try {
-                let product = await getProduct(id);
-                if (product) {
-                    setProduct(product.data);
-                }
-            }
-            catch (err) {
-                setError(err)
-            }
-            finally {
-                setLoading(false);
-            }
-        }
-        if (id) {
-            fetchProduct();
-        }
-    }, [id]);
 
     function onCloseModal() {
         setOpenModal(false);
@@ -39,7 +16,7 @@ export default function Index() {
     }
 
     const [userForm, setUserForm] = useState({
-        productId : id,
+        productId : Number(id),
         fname : '',
         lname : '',
         email : '' ,
@@ -61,10 +38,17 @@ console.log(userForm)
     const submitForm = async (e) => {
         e.preventDefault();
 
+        emailjs.sendForm('service_myr85yk', 'template_37c4bzs', e.target, 'Q3QhFw4kOWDePSZFD')
+        .then((result) => {
+            console.log(result.text);
+        }, (error) => {
+            console.log(error.text);
+        });
+
         const data = await fetch("http://localhost:3030/api/products/interested",{
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: `productId=${userForm.productId}&fname=${userForm.fname}&lname=${userForm.lname}&email=${userForm.email}`,
+              body: `fname=${userForm.fname}&lname=${userForm.lname}&email=${userForm.email}&interestingProducts=${userForm.productId}`,
             }
           );
 

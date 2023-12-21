@@ -11,6 +11,7 @@ import Alert from "@/components/UI/Alert";
 import { getBase64 } from '../../../lib/base64';
 import Modal from "@/components/UI/Modal";
 import ProductCard from "@/components/products/ProductCard";
+
 export default function Page() {
 
     const { id } = useParams();
@@ -45,12 +46,15 @@ export default function Page() {
             }
         }   
         const listReco = async () => {
-            const data = await getRecoList();
-            if(data){
-             setRecoList(data)
-        }
-}
-
+            try{
+                const data = await getRecoList();
+                if(data){
+                 setRecoList(data)
+            }}
+            catch(err){
+                console.log(err)
+            }
+            }
         if (id) {
             fetchProduct();
             listReco()
@@ -68,6 +72,30 @@ export default function Page() {
             fetchPlaceholderImage();
         }
     }, [product]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const storedPrice = localStorage.getItem('FilterPrice');
+            if (storedPrice) {
+              const parsedPrice = JSON.parse(storedPrice);
+              if (parsedPrice) {
+                const recolist = await getRecoList(parsedPrice, id);
+                if (recolist) {
+                  // Utilisez slice pour obtenir les éléments 0 et 1 du tableau recolist
+                  setRecoList(recolist);
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Une erreur s\'est produite lors de la récupération des données :', error);
+          }
+        };
+      
+        fetchData();
+      }, [id]);
+      
+      
 
     if (loading) return <Loader />;
 
